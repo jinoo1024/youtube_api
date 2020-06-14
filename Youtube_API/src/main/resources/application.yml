@@ -1,0 +1,43 @@
+spring:
+  profiles:
+    active: local
+    
+
+
+#local 환경 
+---
+spring:
+  profiles: local
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: jinoo_postgre
+    password: \!wjdwlsdn80
+    driver-class-name: org.postgresql.Driver
+
+logging:
+  config: classpath:logback-local.xml 
+
+
+
+#dev 환경
+---
+spring:
+  profiles: dev
+
+logging:
+  config: classpath:logback-dev.xml 
+
+
+
+#real 환경
+---
+spring:
+  profiles: real
+
+logging:
+  config: classpath:logback-real.xml 
+  
+    
+    
+  

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinoo.youtube.batch.mapper.api.YoutubeApiSearchMapper">
+    
+    <insert id="insertYoutubeVideoH" parameterType="map">
+    
+	    insert into youtube_video_h
+	    (	
+	    	video_id
+	    	,title
+	    	,description
+	    	,published_at
+	    	,channel_id
+	    	,channel_title
+	    	,reg_id
+	    	,reg_date
+	    	,mod_id
+	    	,mod_date
+	    	,search_keyword
+	    )
+	    with tmp as(
+		    select 
+		    	#{videoId} as video_id
+		    	,#{title} as title
+		    	,#{description} as description
+		    	,cast(#{publishedAt} as timestamp) as published_at
+		    	,#{channelId} as channel_id
+		    	,#{channelTitle} as channel_title
+		    	,#{regId} as reg_id
+		    	,now() as reg_date
+		    	,#{modId} as mod_id
+		    	,now() as mod_date
+		    	,#{searchKeyword} as search_keyword
+		) select * from tmp
+		where not exists (select 1 from youtube_video_h b
+						where tmp.video_id = b.video_id
+		)
+	
+	</insert>
+   
+</mapper>
+

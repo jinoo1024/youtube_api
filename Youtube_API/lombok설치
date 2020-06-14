@@ -1,0 +1,3 @@
+1. pom.xml dependency 설정
+2. sts 종료 
+3. lombok jar파일 있는 폳더에서 java -jar lombok.xxxxx.jar 실

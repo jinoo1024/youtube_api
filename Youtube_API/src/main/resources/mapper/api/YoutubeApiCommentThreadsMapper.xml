@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinoo.youtube.batch.mapper.api.YoutubeApiCommentThreadsMapper">
+    
+    <resultMap id="youtubeVideoHResultMap" type="com.jinoo.youtube.batch.vo.sql.YoutubeVideoH">
+    	<result property="videoId" column="video_id" />
+    	<result property="title" column="title" />
+    	<result property="description" column="description" />
+    	<result property="publishedAt" column="publishe_at" />
+    	<result property="channelId" column="channel_id" />
+    	<result property="channelTitle" column="channel_title" />
+    	<result property="regId" column="reg_id" />
+    	<result property="regDate" column="reg_date" />
+    	<result property="modId" column="mod_id" />
+    	<result property="modDate" column="mod_date" />
+    	<result property="searchKeyword" column="search_keyword" />
+    </resultMap>
+    <select id="getYoutubeVideoH" parameterType="map" resultMap="youtubeVideoHResultMap">
+    	select
+			a.video_id
+			,a.title
+			,a.description
+			,a.published_at
+			,a.channel_id
+			,a.channel_title
+			,a.reg_id
+			,a.reg_date
+			,a.mod_id
+			,a.mod_date
+			,a.search_keyword
+		from youtube_video_h a 
+		where 1=1
+
+		<if test="videoId != null and videoId != ''">
+			and a.video_id = #{videoId}		
+		</if>
+		
+		<if test="searchKeyword != null and searchKeyword != ''">
+			and a.search_keyword = #{searchKeyword}		
+		</if>
+	</select>
+	
+	
+	<insert id="insertYoutubeVideoCommentH" parameterType="map">
+    
+	    insert into youtube_video_comment_h
+	    (	
+	    	video_id
+			,comment_id
+			,text_display
+			,text_original
+			,author_display_name
+			,author_profile_image_url
+			,author_channel_url
+			,author_channel_id
+			,can_rate
+			,viewer_rating
+			,like_count
+			,published_at
+			,updated_at
+			,reg_id
+			,reg_date
+			,mod_id
+			,mod_date
+	    )
+	    with tmp as(
+		    select 
+		    	#{videoId} as video_id
+		    	,#{commentId} as comment_id
+		    	,#{textDisplay} as text_display
+		    	,#{textOriginal} as text_original
+		    	,#{authorDisplayName} as author_display_name
+		    	,#{authorProfileImageUrl} as author_profile_image_url
+		    	,#{authorChannelUrl} as author_channel_url
+		    	,#{authorChannelId} as author_channel_id
+		    	,cast(#{canRate} as bool) as can_rate
+		    	,#{viewerRating} as viewer_rating
+		    	,cast(#{likeCount} as int4) as like_count
+		    	,cast(#{publishedAt} as timestamp) as published_at
+		    	,cast(#{updatedAt} as timestamp) as updated_at
+		    	,#{regId} as reg_id
+		    	,now() as reg_date
+		    	,#{modId} as mod_id
+		    	,now() as mod_date
+		) select * from tmp
+		where not exists (select 1 from youtube_video_comment_h b
+						where tmp.video_id = b.video_id
+						and tmp.comment_id = b.comment_id
+		)
+	
+	</insert>
+   
+</mapper>
+

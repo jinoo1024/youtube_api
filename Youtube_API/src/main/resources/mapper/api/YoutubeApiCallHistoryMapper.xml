@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jinoo.youtube.batch.mapper.api.YoutubeApiCallHistoryMapper">
+    
+    <insert id="insertYoutubeApiCallHistory" parameterType="map">
+    
+	    insert into youtube_api_call_history
+	    (	
+	    	api_class
+	    	,signature
+			,exe_date
+			,exe_time
+			
+			<if test="exceptionType != null and exceptionType != ''">
+				,exception_type		
+			</if>
+			
+			<if test="httpStatus != null and httpStatus != ''">
+				,http_status		
+			</if>
+			
+			,reg_id
+			,reg_date
+			,mod_id
+			,mod_date
+	    )
+	    values
+	    (
+	    	#{apiClass}
+	    	,#{signature}
+	    	,to_char(now(), 'yyyymmdd')
+	    	,to_char(now(), 'hh24miss')
+	    	
+	    	<if test="exceptionType != null and exceptionType != ''">
+				,#{exceptionType}		
+			</if>
+			
+			<if test="httpStatus != null and httpStatus != ''">
+		    	,cast(#{httpStatus} as varchar)
+			</if>
+			
+	    	,#{regId}
+		    ,now()
+		    ,#{modId}
+		    ,now()
+	    )
+	
+	</insert>
+   
+</mapper>
+

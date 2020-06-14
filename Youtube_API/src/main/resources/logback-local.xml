@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+<!-- 변수 지정 -->
+    <property name="LOG_DIR" value="/Users/jinoo-u/Jinoo's Documents/development/logs" />
+    <property name="LOG_FILE" value="local" />
+
+  	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    	<encoder>
+      		<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    	</encoder>
+  	</appender>
+
+  	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<file>${LOG_DIR}/${LOG_FILE}.log</file>
+    	<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      		<!-- daily roll-over -->
+      		<fileNamePattern>${LOG_DIR}/${LOG_FILE}.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+      		<!-- keep 30 days' worth of history capped at 3GB total size -->
+      		<maxHistory>30</maxHistory>
+      		<totalSizeCap>3GB</totalSizeCap>
+		</rollingPolicy>
+
+    	<encoder>
+      		<pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+    	</encoder>
+  	</appender> 
+
+	<root level="debug">
+    	<appender-ref ref="STDOUT" />
+    	<appender-ref ref="FILE" />
+  	</root>
+  	
+	<logger name="org.springframework" level="info" additivity="false"> <!-- additivity: root 상속여부(default:true) -->
+		<appender-ref ref="STDOUT"/> 
+		<appender-ref ref="FILE"/> 
+	</logger>
+	
+	<logger name="org.springframework.jdbc.datasource" level="debug" additivity="false"> <!-- additivity: root 상속여부(default:true) -->
+		<appender-ref ref="STDOUT"/> 
+		<appender-ref ref="FILE"/> 
+	</logger>
+	
+	
+	<logger name="org.apache.http" level="off" additivity="false"> <!-- additivity: root 상속여부(default:true) -->
+		<appender-ref ref="STDOUT"/> 
+		<appender-ref ref="FILE"/> 
+	</logger>
+	
+</configuration>
