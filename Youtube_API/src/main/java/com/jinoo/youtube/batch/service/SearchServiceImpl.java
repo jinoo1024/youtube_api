@@ -77,7 +77,7 @@ public class SearchServiceImpl implements RunService {
 		requestParam.put("part", "snippet");
 		requestParam.put("key", CommonConstant.YOUTUBE_API_KEY);
 		requestParam.put("maxResults", (new Integer(50)).toString());
-		requestParam.put("q", "컬리");
+		requestParam.put("q", "쿠팡");
 		requestParam.put("order", "date");
 		requestParam.put("type", "video");
 	}
